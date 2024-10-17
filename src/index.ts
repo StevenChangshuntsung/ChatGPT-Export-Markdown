@@ -15,6 +15,7 @@ var msg003 = '沒有找到內容';
                 throw msg001;
             }
         } catch (error) {
+            console.error(error);
             throw `step_1 - ${msg001}`;
         }
 
@@ -28,6 +29,7 @@ var msg003 = '沒有找到內容';
                 throw msg001;
             }
         } catch (error) {
+            console.error(error);
             throw `step_2 - ${msg001}`;
         }
 
@@ -35,6 +37,7 @@ var msg003 = '沒有找到內容';
         try {
             step_3 = step_2.innerText;
         } catch (error) {
+            console.error(error);
             throw `step_3 - ${msg001}`;
         }
 
@@ -65,6 +68,7 @@ var msg003 = '沒有找到內容';
                 throw msg002;
             }
         } catch (error) {
+            console.error(error);
             throw `step_1 - ${msg002}`;
         }
 
@@ -78,6 +82,7 @@ var msg003 = '沒有找到內容';
                 .replace(/[\n\t]/g, ' ')
                 .replace(' 分享', '');
         } catch (error) {
+            console.error(error);
             throw `step_2 - ${msg002}`;
         }
 
@@ -100,44 +105,95 @@ var msg003 = '沒有找到內容';
     }
     // 定義一個將 HTML 轉換為 Markdown 的函數
     function htmlToMarkdown(element: HTMLElement): string {
-        switch (element.tagName.toLowerCase()) {
-            case 'pre':
-                // 處理 <pre> 標籤，通常包含程式碼區塊
-                return convertPreToMarkdown(element);
-            case 'table':
-                // 處理 <table> 標籤
-                return convertTableToMarkdown(element);
-            case 'h3':
-                // 處理 <h3> 標籤，轉成 `### 標題`
-                return `### ${element.textContent?.trim() || ''}\n`;
-            case 'ul':
-                // 處理 <ul> 列表，轉成 Markdown 的無序列表
-                return convertListToMarkdown(element, '-');
-            case 'ol':
-                // 處理 <ol> 列表，轉成 Markdown 的有序列表
-                return convertListToMarkdown(element, '1.');
-            case 'p':
-                // 處理 <p> 段落
-                return `${element.textContent?.trim() || ''}\n`;
-            case 'div':
-                let markdown = '';
-                let childElement = element.children;
-                if (childElement.length > 0) {
-                    for (let index = 0; index < childElement.length; index++) {
-                        markdown += htmlToMarkdown(childElement[index] as HTMLElement) + `\n`;
+        if(element.tagName){
+            switch (element.tagName.toLowerCase()) {
+                case 'pre':
+                    // 處理 <pre> 標籤，通常包含程式碼區塊
+                    return convertPreToMarkdown(element);
+                case 'table':
+                    // 處理 <table> 標籤
+                    return convertTableToMarkdown(element);
+                case 'h3':
+                    // 處理 <h3> 標籤，轉成 `### 標題`
+                    return `### ${element.textContent?.trim() || ''}\n`;
+                case 'h4':
+                    // 處理 <h4> 標籤，轉成 `#### 標題`
+                    return `#### ${element.textContent?.trim() || ''}\n`;
+                case 'h5':
+                    // 處理 <h5> 標籤，轉成 `##### 標題`
+                    return `##### ${element.textContent?.trim() || ''}\n`;
+                case 'h6':
+                    // 處理 <h6> 標籤，轉成 `###### 標題`
+                    return `###### ${element.textContent?.trim() || ''}\n`;
+                case 'ul':
+                    // 處理 <ul> 列表，轉成 Markdown 的無序列表
+                    return convertListToMarkdown(element, '-');
+                case 'ol':
+                    // 處理 <ol> 列表，轉成 Markdown 的有序列表
+                    return convertListToMarkdown(element, '1.');
+                case 'p':
+                case 'span':
+                    // 處理 <p> 段落
+                    return convertPToMarkdown(element);
+                case 'a':
+                    // 處理 <a> 段落
+                    return convertAToMarkdown(element);
+                case 'code':
+                    return `\`\`\`${element.textContent?.trim()}\`\`\` `;
+                case 'strong':
+                    return convertStrongToMarkdown(element);
+                case 'div':
+                    let markdown = '';
+                    let childElement = element.children;
+                    if (childElement.length > 0) {
+                        for (let index = 0; index < childElement.length; index++) {
+                            markdown += htmlToMarkdown(childElement[index] as HTMLElement) + `\n`;
+                        }
                     }
-                }
-                return markdown;
-            default:
-                return element.innerText;
+                    return markdown;
+                default:
+                    return element.innerText;
+            }
+        }else{
+            return element.textContent || '';
         }
+    }
+
+    // 將 HTML 元素 strong 轉換成 Markdown
+    function convertStrongToMarkdown(strong: HTMLElement): string {
+        let markdown = strong.textContent || '';
+        // let childElement = strong.childNodes;
+        // if (childElement.length > 0) {
+        //     for (let index = 0; index < childElement.length; index++) {
+        //         markdown += htmlToMarkdown(childElement[index] as HTMLElement);
+        //     }
+        // }
+        return `**${markdown}**`;
+    }
+
+    // 將 HTML 元素 a 轉換成 Markdown
+    function convertAToMarkdown(a: HTMLElement): string {
+        return `[${a.textContent}](${a.getAttribute('href')})`;
+    }
+
+    // 將 HTML 元素 P 轉換成 Markdown
+    function convertPToMarkdown(p: HTMLElement): string {
+        let markdown = '';
+        let childElement = p.childNodes;
+        if (childElement.length > 0) {
+            for (let index = 0; index < childElement.length; index++) {
+                markdown += htmlToMarkdown(childElement[index] as HTMLElement);
+            }
+        }
+        markdown += '\n';
+        return markdown;
     }
 
     // 將 <pre> 標籤轉換成 Markdown 程式碼區塊
     function convertPreToMarkdown(pre: HTMLElement): string {
         const lang = (pre.children[0].children[0] as HTMLElement).innerText;
         const code = (pre.children[0].children[2] as HTMLElement).innerText;
-        return `\`\`\`${lang}\n${code}\n\`\`\``;
+        return `\`\`\`${lang}\n${code}\n\`\`\`\n`;
     }
 
     // 將 <table> 轉換成 Markdown 表格語法
@@ -160,16 +216,19 @@ var msg003 = '沒有找到內容';
     // 將 <ul> 或 <ol> 轉換為 Markdown 列表
     function convertListToMarkdown(list: HTMLElement, listType: string): string {
         let markdown = '';
-        const items = list.querySelectorAll('li');
+        const items = Array.from(list.children);
         items.forEach((item, index) => {
             const prefix = listType === '1.' ? `${index + 1}.` : listType;
 
-            let childElement = item.children;
+            markdown += `${prefix} `;
+            let childElement = item.childNodes;
             if (childElement.length > 0) {
                 for (let index = 0; index < childElement.length; index++) {
-                    markdown += htmlToMarkdown(childElement[index] as HTMLElement) + `\n`;
+                    markdown += htmlToMarkdown(childElement[index] as HTMLElement);
                 }
             }
+            markdown += `\n`;
+
         });
         return markdown;
     }
@@ -185,6 +244,7 @@ var msg003 = '沒有找到內容';
                 throw msg003;
             }
         } catch (error) {
+            console.error(error);
             throw `step_1 - ${msg003}`;
         }
 
@@ -193,6 +253,7 @@ var msg003 = '沒有找到內容';
         try {
             step_2 = Array.prototype.filter.call(step_1.children[0].children, el => el.className.indexOf('w-full') > -1);
         } catch (error) {
+            console.error(error);
             throw `step_2 - ${msg003}`;
         }
 
@@ -215,6 +276,7 @@ var msg003 = '沒有找到內容';
 
             }
         } catch (error) {
+            console.error(error);
             throw `step_3 - ${msg003}`;
         }
 
