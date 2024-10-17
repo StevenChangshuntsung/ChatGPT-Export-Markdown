@@ -193,7 +193,7 @@ var msg003 = '沒有找到內容';
     function convertPreToMarkdown(pre: HTMLElement): string {
         const lang = (pre.children[0].children[0] as HTMLElement).innerText;
         const code = (pre.children[0].children[2] as HTMLElement).innerText;
-        return `\`\`\`${lang}\n${code}\n\`\`\`\n`;
+        return `\n\`\`\`${lang}\n${code}\n\`\`\`\n`;
     }
 
     // 將 <table> 轉換成 Markdown 表格語法
