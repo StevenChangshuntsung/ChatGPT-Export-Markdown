@@ -1,5 +1,6 @@
 "use strict";
 var msg001 = '沒有找到標題';
+var msg001_1 = '沒有找到標題，請自訂檔案名稱';
 var msg002 = '沒有找到 AI Name';
 var msg003 = '沒有找到內容';
 (_ => {
@@ -15,7 +16,7 @@ var msg003 = '沒有找到內容';
         }
         catch (error) {
             console.error(error);
-            throw `step_1 - ${msg001}`;
+            return prompt(msg001_1);
         }
         let step_2;
         try {
@@ -41,8 +42,7 @@ var msg003 = '沒有找到內容';
     titleName = getTitleName();
     if (!titleName) {
         confirm(msg001);
-        throw msg001;
-        return;
+        titleName = prompt(msg001_1);
     }
     // === 找標題 ===
     document.title = titleName;

@@ -1,12 +1,13 @@
 
 var msg001 = '沒有找到標題';
+var msg001_1 = '沒有找到標題，請自訂檔案名稱';
 var msg002 = '沒有找到 AI Name';
 var msg003 = '沒有找到內容';
 (_ => {
 
     // === 找標題
     let titleName = '';
-    function getTitleName() {
+    function getTitleName(): string {
         let step_1;
         try {
             step_1 = document.querySelector("body > div.relative.flex.h-full.w-full.overflow-hidden.transition-colors.z-0 > div.flex-shrink-0.overflow-x-hidden.bg-token-sidebar-surface-primary > div > div > div > nav > div.flex-col.flex-1.transition-opacity.duration-500.relative.-mr-2.pr-2.overflow-y-auto > div.flex.flex-col.gap-2.pb-2.text-token-text-primary.text-sm.mt-5")
@@ -16,7 +17,7 @@ var msg003 = '沒有找到內容';
             }
         } catch (error) {
             console.error(error);
-            throw `step_1 - ${msg001}`;
+            return prompt(msg001_1) as string;
         }
 
 
@@ -47,8 +48,7 @@ var msg003 = '沒有找到內容';
     titleName = getTitleName();
     if (!titleName) {
         confirm(msg001);
-        throw msg001;
-        return;
+        titleName = prompt(msg001_1) as string;
     }
     // === 找標題 ===
     document.title = titleName;
