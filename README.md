@@ -6,6 +6,7 @@ Use bookmark applets (Bookmarklets) Export ChatGPT to Markdown
 
 ## 缺點
 目前不支援圖片，暫時想不到怎麼做比較好，可能是匯出 word 或 pdf
+目前不支援數學公式
 
 ## 下載與執行
 Clone 之後，執行 npm run build 產生 index.min.js 檔案，將檔案內容加入書籤。
