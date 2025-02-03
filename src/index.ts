@@ -10,7 +10,7 @@ var msg003 = '沒有找到內容';
     function getTitleName(): string {
         let step_1;
         try {
-            step_1 = document.querySelector("body > div.relative.flex.h-full.w-full.overflow-hidden.transition-colors.z-0 > div.z-\\[21\\].flex-shrink-0.overflow-x-hidden.bg-token-sidebar-surface-primary.max-md\\:\\!w-0 > div > div > div > nav > div.flex-col.flex-1.transition-opacity.duration-500.relative.-mr-2.pr-2.overflow-y-auto")
+            step_1 = document.querySelector("body > div.flex.h-full.w-full.flex-col > div > div.relative.flex.h-full.w-full.flex-row.overflow-hidden > div.z-\\[21\\].flex-shrink-0.overflow-x-hidden.bg-token-sidebar-surface-primary.max-md\\:\\!w-0 > div > div > div > nav > div.flex-col.flex-1.transition-opacity.duration-500.relative.-mr-2.pr-2.overflow-y-auto")
 
             if (step_1 == null) {
                 throw msg001;
@@ -19,12 +19,13 @@ var msg003 = '沒有找到內容';
             console.error(error);
             return prompt(msg001_1) as string;
         }
+        debugger;
 
 
         let step_2;
         try {
-            step_2 = Array.prototype.filter.call(step_1.querySelectorAll('div.group'),
-                el => el.children[1].className.indexOf('hidden') == -1
+            step_2 = Array.prototype.filter.call(step_1.querySelectorAll('li.relative'),
+                el => el.children[0].children[1].className.indexOf('can-hover:group-hover:visible') == -1
             )[0];
             if (step_2 == null) {
                 throw msg001;
@@ -59,35 +60,8 @@ var msg003 = '沒有找到內容';
 
     // === 找 AI NAME
     let aiName = '';
-    function getAiName() {
-
-        let step_1;
-        try {
-            step_1 = document.querySelector("body > div.relative.flex.h-full.w-full.overflow-hidden.transition-colors.z-0 > div.relative.flex.h-full.max-w-full.flex-1.flex-col.overflow-hidden > main > div.composer-parent.flex.h-full.flex-col.focus-visible\\:outline-0 > div.flex-1.overflow-hidden > div > div > div > div");
-            if (step_1 == null) {
-                throw msg002;
-            }
-        } catch (error) {
-            console.error(error);
-            throw `step_1 - ${msg002}`;
-        }
-
-        let step_2;
-        try {
-            step_2 = step_1.childNodes[0] as HTMLElement;
-            if (step_2 == null) {
-                throw msg002;
-            }
-            return step_2.innerText
-                .replace(/[\n\t]/g, ' ')
-                .replace(' 分享', '');
-        } catch (error) {
-            console.error(error);
-            throw `step_2 - ${msg002}`;
-        }
-
-    }
-    aiName = getAiName();
+    
+    aiName = 'ChatGPT 說：';
     if (!aiName) {
         confirm(msg002);
         throw msg002;
@@ -239,7 +213,7 @@ var msg003 = '沒有找到內容';
 
         let step_1;
         try {
-            step_1 = document.querySelector("body > div.relative.flex.h-full.w-full.overflow-hidden.transition-colors.z-0 > div.relative.flex.h-full.max-w-full.flex-1.flex-col.overflow-hidden > main > div.composer-parent.flex.h-full.flex-col.focus-visible\\:outline-0 > div.flex-1.overflow-hidden > div > div > div");
+            step_1 = document.querySelector("body > div.flex.h-full.w-full.flex-col > div > div.relative.flex.h-full.w-full.flex-row.overflow-hidden > div.relative.flex.h-full.max-w-full.flex-1.flex-col.overflow-hidden > main > div.composer-parent.flex.h-full.flex-col.focus-visible\\:outline-0 > div.flex-1.overflow-hidden.\\@container\\/thread > div > div > div > div");
             if (step_1 == null) {
                 throw msg003;
             }
@@ -248,10 +222,9 @@ var msg003 = '沒有找到內容';
             throw `step_1 - ${msg003}`;
         }
 
-
         let step_2;
         try {
-            step_2 = Array.prototype.filter.call(step_1.children[0].children, el => el.className.indexOf('w-full') > -1);
+            step_2 = Array.prototype.filter.call(step_1.children, el => el.className.indexOf('w-full') > -1);
         } catch (error) {
             console.error(error);
             throw `step_2 - ${msg003}`;
