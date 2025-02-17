@@ -18,7 +18,6 @@ var msg003 = '沒有找到內容';
             console.error(error);
             return prompt(msg001_1);
         }
-        debugger;
         let step_2;
         try {
             step_2 = Array.prototype.filter.call(step_1.querySelectorAll('li.relative'), el => el.children[0].children[1].className.indexOf('can-hover:group-hover:visible') == -1)[0];
@@ -191,7 +190,7 @@ var msg003 = '沒有找到內容';
         const mySelfName = '自己';
         let step_1;
         try {
-            step_1 = document.querySelector("body > div.flex.h-full.w-full.flex-col > div > div.relative.flex.h-full.w-full.flex-row.overflow-hidden > div.relative.flex.h-full.max-w-full.flex-1.flex-col.overflow-hidden > main > div.composer-parent.flex.h-full.flex-col.focus-visible\\:outline-0 > div.flex-1.overflow-hidden.\\@container\\/thread > div > div > div > div");
+            step_1 = document.querySelector("body > div.flex.h-full.w-full.flex-col > div > div.relative.flex.h-full.w-full.flex-row.overflow-hidden > div.relative.flex.h-full.max-w-full.flex-1.flex-col.overflow-hidden > main > div.composer-parent.flex.flex-col.focus-visible\\:outline-0.h-full > div.flex-1.overflow-hidden.\\@container\\/thread.translate-y-\\[2rem\\].-mt-\\[2rem\\].pb-\\[1\\.5rem\\] > div > div");
             if (step_1 == null) {
                 throw msg003;
             }
