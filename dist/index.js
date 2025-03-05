@@ -9,7 +9,7 @@ var msg003 = '沒有找到內容';
     function getTitleName() {
         let step_1;
         try {
-            step_1 = document.querySelector("body > div.flex.h-full.w-full.flex-col > div > div.relative.flex.h-full.w-full.flex-row.overflow-hidden > div.z-\\[21\\].flex-shrink-0.overflow-x-hidden.bg-token-sidebar-surface-primary.max-md\\:\\!w-0 > div > div > div > nav > div.flex-col.flex-1.transition-opacity.duration-500.relative.-mr-2.pr-2.overflow-y-auto");
+            step_1 = document.querySelector("body > div.flex.h-full.w-full.flex-col > div > div.relative.flex.h-full.w-full.flex-row.overflow-hidden > div.z-\\[21\\].flex-shrink-0.overflow-x-hidden.bg-token-sidebar-surface-primary.max-md\\:\\!w-0 > div > div > div > nav > div.flex-col.flex-1.transition-opacity.duration-500.relative.pr-3.overflow-y-auto > div > div.flex.flex-col.gap-2.text-token-text-primary.text-sm.mt-5.first\\:mt-0.false > div");
             if (step_1 == null) {
                 throw msg001;
             }
@@ -20,7 +20,10 @@ var msg003 = '沒有找到內容';
         }
         let step_2;
         try {
-            step_2 = Array.prototype.filter.call(step_1.querySelectorAll('li.relative'), el => el.children[0].children[1].className.indexOf('can-hover:group-hover:visible') == -1)[0];
+            step_2 = Array.prototype.filter.call(step_1.querySelectorAll('li.relative'), el => {
+                var computedStyle = getComputedStyle(el.children[0]);
+                return computedStyle.getPropertyValue('--item-background-color') == '#e3e3e3';
+            })[0];
             if (step_2 == null) {
                 throw msg001;
             }
@@ -190,7 +193,7 @@ var msg003 = '沒有找到內容';
         const mySelfName = '自己';
         let step_1;
         try {
-            step_1 = document.querySelector("body > div.flex.h-full.w-full.flex-col > div > div.relative.flex.h-full.w-full.flex-row.overflow-hidden > div.relative.flex.h-full.max-w-full.flex-1.flex-col.overflow-hidden > main > div.composer-parent.flex.flex-col.focus-visible\\:outline-0.h-full > div.flex-1.overflow-hidden.\\@container\\/thread.translate-y-\\[2rem\\].-mt-\\[2rem\\].pb-\\[1\\.5rem\\] > div > div");
+            step_1 = document.querySelector('main > div > div:nth-child(2) > div > div > div ');
             if (step_1 == null) {
                 throw msg003;
             }
