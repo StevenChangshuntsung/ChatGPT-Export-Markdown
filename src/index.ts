@@ -214,7 +214,7 @@ var msg003 = '沒有找到內容';
 
         let step_1;
         try {
-            step_1 = document.querySelector('main > div > div:nth-child(2) > div > div > div ');
+            step_1 = document.querySelector('main > div> div  > div:nth-child(2) > div > div > div:nth-child(2) ');
             if (step_1 == null) {
                 throw msg003;
             }
