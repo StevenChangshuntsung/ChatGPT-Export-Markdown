@@ -10,14 +10,14 @@ var msg003 = '沒有找到內容';
     function getTitleName(): string {
         let step_1;
         try {
-            step_1 = document.querySelector("body > div.flex.h-full.w-full.flex-col > div > div.relative.flex.h-full.w-full.flex-row.overflow-hidden > div.z-\\[21\\].flex-shrink-0.overflow-x-hidden.bg-token-sidebar-surface-primary.max-md\\:\\!w-0 > div > div > div > nav > div.flex-col.flex-1.transition-opacity.duration-500.relative.pr-3.overflow-y-auto > div > div.flex.flex-col.gap-2.text-token-text-primary.text-sm.mt-5.first\\:mt-0.false > div");
-
+            step_1 = document.querySelector("#history");
+            debugger
             if (step_1 == null) {
                 throw msg001;
             }
         } catch (error) {
             console.error(error);
-            return prompt(msg001_1) as string;
+            return '';
         }
 
         let step_2;
