@@ -25,7 +25,7 @@ var msg003 = '沒有找到內容';
             step_2 = Array.prototype.filter.call(step_1.querySelectorAll('li.relative'),
                 el => {
                     var computedStyle = getComputedStyle(el.children[0]);
-                    return computedStyle.getPropertyValue('--item-background-color') == '#e3e3e3';
+                    return computedStyle.getPropertyValue('background-color') == 'rgb(227, 227, 227)';
                 }
             )[0];
             if (step_2 == null) {
