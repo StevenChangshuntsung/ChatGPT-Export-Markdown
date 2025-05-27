@@ -22,10 +22,10 @@ var msg003 = '沒有找到內容';
 
         let step_2;
         try {
-            step_2 = Array.prototype.filter.call(step_1.querySelectorAll('li.relative'),
+            step_2 = Array.prototype.filter.call(step_1.querySelectorAll('a.__menu-item'),
                 el => {
-                    var computedStyle = getComputedStyle(el.children[0]);
-                    return computedStyle.getPropertyValue('background-color') == 'rgb(227, 227, 227)';
+                    var computedStyle = getComputedStyle(el);
+                    return computedStyle.getPropertyValue('background-color') == 'rgba(0, 0, 0, 0.06)';
                 }
             )[0];
             if (step_2 == null) {
