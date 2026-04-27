@@ -8,10 +8,9 @@ var msg003 = '沒有找到內容';
     // === 找標題
     let titleName = '';
     function getTitleName(): string {
-        let step_1;
+        let step_1: HTMLElement | null;
         try {
-            step_1 = document.querySelector("#history");
-            debugger
+            step_1 = document.querySelector<HTMLElement>("#history");
             if (step_1 == null) {
                 throw msg001;
             }
@@ -20,14 +19,10 @@ var msg003 = '沒有找到內容';
             return '';
         }
 
-        let step_2;
+        let step_2: HTMLElement | null;
         try {
-            step_2 = Array.prototype.filter.call(step_1.querySelectorAll('a.__menu-item'),
-                el => {
-                    var computedStyle = getComputedStyle(el);
-                    return computedStyle.getPropertyValue('background-color') == 'rgba(0, 0, 0, 0.06)';
-                }
-            )[0];
+            step_2 = step_1.querySelector<HTMLElement>('a.__menu-item[data-active]')
+                || step_1.querySelector<HTMLElement>('a.__menu-item[aria-current="page"]');
             if (step_2 == null) {
                 throw msg001;
             }
@@ -210,11 +205,9 @@ var msg003 = '沒有找到內容';
     function getTextContent() {
         const mySelfName = '自己';
 
-
-
         let step_1;
         try {
-            step_1 = document.querySelector('main > div> div  > div:nth-child(2) > div > div > div:nth-child(2) ');
+            step_1 = Array.from(document.querySelectorAll('main section[data-testid^="conversation-turn-"][data-turn]'));
             if (step_1 == null) {
                 throw msg003;
             }
@@ -225,7 +218,10 @@ var msg003 = '沒有找到內容';
 
         let step_2;
         try {
-            step_2 = Array.prototype.filter.call(step_1.children, el => el.className.indexOf('w-full') > -1);
+            step_2 = step_1;
+            if (step_2.length === 0) {
+                throw msg003;
+            }
         } catch (error) {
             console.error(error);
             throw `step_2 - ${msg003}`;
@@ -235,15 +231,24 @@ var msg003 = '沒有找到內容';
         let step_3 = '';
         try {
             for (var i = 0; i < step_2.length; i++) {
-                step_3 += `**${i % 2 === 0 ? mySelfName : aiName}:**\n\n`;
-                if (step_2[i].childNodes[1].getElementsByClassName('markdown').length > 0) {
-                    let step_4 = step_2[i].childNodes[1].getElementsByClassName('markdown')[0].children;
+                const turnElement = step_2[i] as HTMLElement;
+                const isUser = turnElement.getAttribute('data-turn') === 'user';
+                const speakerName = isUser
+                    ? mySelfName
+                    : (turnElement.querySelector('h4')?.textContent || aiName).replace(/\s*說：\s*$/, '');
+
+                step_3 += `**${speakerName}:**\n\n`;
+
+                const markdownElement = turnElement.querySelector('.markdown') as HTMLElement | null;
+                if (markdownElement != null) {
+                    let step_4 = markdownElement.children;
                     for (let index = 0; index < step_4.length; index++) {
                         step_3 += htmlToMarkdown(step_4[index] as HTMLElement) + `\n`;
                     }
 
                 } else {
-                    const selfText = replaceHtmlTags(step_2[i].innerText);
+                    const rawText = turnElement.querySelector('[data-message-author-role]')?.textContent || turnElement.innerText;
+                    const selfText = replaceHtmlTags(rawText.trim());
                     step_3 += `${selfText}\n\n`;
                 }
                 step_3 += `\n\n---\n\n`;
