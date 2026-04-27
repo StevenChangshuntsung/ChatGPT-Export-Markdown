@@ -161,8 +161,13 @@ var msg003 = '沒有找到內容';
 
     // 將 <pre> 標籤轉換成 Markdown 程式碼區塊
     function convertPreToMarkdown(pre: HTMLElement): string {
-        const lang = (pre.children[0].children[0] as HTMLElement).innerText;
-        const code = (pre.children[0].children[2] as HTMLElement).innerText;
+        const codeElement = pre.querySelector('code') as HTMLElement | null;
+        const langSource = codeElement || pre;
+        const langClassName = langSource.className || '';
+        const lang = langSource.getAttribute('data-language')
+            || langSource.getAttribute('data-lang')
+            || (langClassName.match(/language-([\w-]+)/)?.[1] || '');
+        const code = codeElement?.innerText || pre.innerText;
         return `\n\`\`\`${lang}\n${code}\n\`\`\`\n`;
     }
 

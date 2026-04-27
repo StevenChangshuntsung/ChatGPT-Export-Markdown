@@ -150,8 +150,14 @@ var msg003 = '沒有找到內容';
     }
     // 將 <pre> 標籤轉換成 Markdown 程式碼區塊
     function convertPreToMarkdown(pre) {
-        const lang = pre.children[0].children[0].innerText;
-        const code = pre.children[0].children[2].innerText;
+        var _a;
+        const codeElement = pre.querySelector('code');
+        const langSource = codeElement || pre;
+        const langClassName = langSource.className || '';
+        const lang = langSource.getAttribute('data-language')
+            || langSource.getAttribute('data-lang')
+            || (((_a = langClassName.match(/language-([\w-]+)/)) === null || _a === void 0 ? void 0 : _a[1]) || '');
+        const code = (codeElement === null || codeElement === void 0 ? void 0 : codeElement.innerText) || pre.innerText;
         return `\n\`\`\`${lang}\n${code}\n\`\`\`\n`;
     }
     // 將 <table> 轉換成 Markdown 表格語法
